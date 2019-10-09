@@ -1,10 +1,12 @@
-import { LevelTagToPrefab } from "../public/ConstDefine";
 
 /*
  * @Author: xxZhang
  * @Date: 2019-10-08 17:05:06
  * @Description: 游戏场景的显示
  */
+
+import { LevelTagToPrefab } from "../public/ConstDefine";
+import { HHelpTools } from "HHelpTools";
 
 cc.Class({
     extends: Script,
@@ -17,7 +19,23 @@ cc.Class({
         nodeTime: {
             default: null,
             type: cc.Node
-        }
+        },
+        labelCountDown: {
+            default: null,
+            type: cc.Label
+        },
+        nodeKeep: {
+            default: null,
+            type: cc.Node
+        },
+
+        nodeWall: {
+            default: null,
+            type: cc.Node
+        },
+
+        _labelCountDownValue: 5,
+        _countDownCallback: null,
     },
 
 
@@ -37,6 +55,7 @@ cc.Class({
         });
         cc.systemEvent.on("ready_next", this.readyNext, this);
         cc.systemEvent.on("do_countdown", this.doCountDown, this);
+        cc.systemEvent.on("close_countdown", this.closeCountDown, this);
     },
 
     start() {
@@ -61,6 +80,7 @@ cc.Class({
     onDestroy() {
         cc.systemEvent.off("ready_next", this.readyNext, this);
         cc.systemEvent.off("do_countdown", this.doCountDown, this);
+        cc.systemEvent.off("close_countdown", this.closeCountDown, this);
     },
 
     initLevel() {
@@ -166,23 +186,65 @@ cc.Class({
     },
 
     doCountDown() {
-        if(this._curIndex < this._allNodes.length ||
+        if (this._curIndex < this._allNodes.length ||
             this._isShowWinLayer) {
             return;
         }
         cc.systemEvent.emit("change_time_status", false);
         this._isShowWinLayer = true;
-        g_app.showWinLayer();
+        this.labelCountDown.string = HHelpTools.fixedZero(this._labelCountDownValue, 2);
+        this._countDownCallback = () => {
+            this._labelCountDownValue--;
+            this.labelCountDown.string = HHelpTools.fixedZero(this._labelCountDownValue, 2);
+            if (this._labelCountDownValue === 0) {
+                g_app.showWinLayer();
+                this.unschedule(this._countDownCallback);
+                this._countDownCallback = null;
+            }
+        }
+
+        let action1 = cc.moveTo(0.5, cc.v2(0, cc.winSize.height / 2 - this.nodeKeep.height / 2));
+
+        let action2 = cc.callFunc(() => {
+            this._countDownCallback && this.schedule(this._countDownCallback, 1);
+        })
+        this.nodeKeep.runAction(cc.sequence(action1, action2));
+        // this.countDownKeep(5);
     },
 
     resetGame() {
-        for(let i = 0; i < this._allNodes.length; ++ i) {
+        for (let i = 0; i < this._allNodes.length; ++i) {
             this._allNodes[i].destroy();
         }
         this._allNodes = [];
         this._curIndex = 0;
         this._isShowWinLayer = false;
+        this._labelCountDownValue = 5;
 
         this.nodeTime.script.reset();
+        this.nodeWall.script.reset();
+        this.nodeKeep.y = cc.winSize.height / 2 + this.nodeKeep.height / 2;
     },
+
+    /**
+     * @description: 停止倒计时
+     * @param : 
+     * @return : 
+     */
+    closeCountDown() {
+        if (!this._countDownCallback) {
+            return;
+        }
+        this.unschedule(this._countDownCallback);
+        this._countDownCallback = null;
+    },
+
+    /**
+     * @description: 确定是否已经判定胜利了
+     * @param : 
+     * @return : 
+     */
+    isShowWin() {
+        return this._labelCountDownValue === 0;
+    }
 });

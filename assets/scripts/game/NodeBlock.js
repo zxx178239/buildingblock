@@ -32,6 +32,7 @@ cc.Class({
             return;
         }
         cc.systemEvent.emit("ready_next");
+        this.node.zIndex = 100;
     },
 
     onTouchMove(event) {
@@ -48,6 +49,7 @@ cc.Class({
         if(this._isStartMove || !this._isCanMove) {
             return;
         }
+        this.node.zIndex = 1;
         this._isCanMove = false;
         this.node.getComponent(cc.RigidBody).awake = true;
         let physicsComponent = this.node.getComponent(cc.PhysicsBoxCollider) ||
