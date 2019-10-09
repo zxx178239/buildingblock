@@ -149,9 +149,13 @@ class HHelpTools {
         }
     }
 
-    static calPrice(INPrice) {
-        INPrice = INPrice / 100;
-        return parseFloat(INPrice.toFixed(2)); 
+    /**
+     * @description: 填充0
+     * @param : 
+     * @return : 
+     */
+    static fixedZero(INNum, INBit) {
+        return ('000000000'+INNum).slice(-INBit);
     }
 }
 

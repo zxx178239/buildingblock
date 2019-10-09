@@ -12,6 +12,7 @@ cc.Class({
         _endPosY: 0,
         _stepY: 20,
         _isCanMove: true,
+        _index: 0,
     },
 
 
@@ -53,6 +54,8 @@ cc.Class({
                                 this.node.getComponent(cc.PhysicsCircleCollider) ||
                                 this.node.getComponent(cc.PhysicsPolygonCollider);
         physicsComponent.enabled = true;
+
+        cc.systemEvent.emit("change_time_status", true);
     },
 
     onTouchCancel() {
@@ -74,16 +77,15 @@ cc.Class({
         }
     },
 
-    beginMove(INEndPos) {
+    beginMove(INEndPos, INIndex) {
         this._endPosY = INEndPos;
         this._isStartMove = true;
+        this._index = INIndex;
     },
 
     onBeginContact: function (contact, selfCollider, otherCollider) {
-        console.log("begin contact");
-        // g_app.showLoseLayer();
-
-        if(otherCollider.node.group === "block") {
+        if(selfCollider.node.group === "block" &&
+            this._index + 1 === g_app.getGameData().getCurLevelBlockNums() ) {
             cc.systemEvent.emit("do_countdown");
         }
     },

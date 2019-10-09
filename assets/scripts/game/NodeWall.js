@@ -19,6 +19,7 @@ cc.Class({
 
     onBeginContact: function (contact, selfCollider, otherCollider) {
         console.log("begin contact");
+        // cc.director.pause();
         g_app.showLoseLayer();
     },
 

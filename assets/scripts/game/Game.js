@@ -7,11 +7,17 @@ import { LevelTagToPrefab } from "../public/ConstDefine";
  */
 
 cc.Class({
-    extends: cc.Component,
+    extends: Script,
 
     properties: {
         _allNodes: [],
         _curIndex: 0,
+        _isShowWinLayer: false,
+
+        nodeTime: {
+            default: null,
+            type: cc.Node
+        }
     },
 
 
@@ -35,6 +41,21 @@ cc.Class({
 
     start() {
 
+    },
+
+    /**
+     * @description: 重玩该关卡
+     * @param : 
+     * @return : 
+     */
+    repeatGame() {
+        this.resetGame();
+        let bigIndex = g_app.getGameData().getLevelBigIndex();
+        let levelInfos = g_cfgManager.getConfigRecord("LevelConfigs", bigIndex);
+
+        let levelTags = levelInfos["level_tags"];
+        let subIndex = g_app.getGameData().getLevelSubIndex();
+        this.geneAllBlocks(levelTags[subIndex]["block_list"]);
     },
 
     onDestroy() {
@@ -66,6 +87,7 @@ cc.Class({
     },
 
     geneAllBlocks(INBlockList) {
+        g_app.getGameData().setCurLevelBlockNums(INBlockList.length);
         for (let i = 0; i < INBlockList.length; ++i) {
             let prefabTag = INBlockList[i]["prefab_tag"];
             let prefabPath = LevelTagToPrefab[prefabTag];
@@ -86,7 +108,7 @@ cc.Class({
         if (!INNodeList[INIndex]) {
             return;
         }
-        this.doAction(INNodeList[INIndex], INIndex === 0);
+        this.doAction(INNodeList[INIndex], INIndex);
         this.scheduleOnce(() => {
             this.doAllActions(INNodeList, INIndex - 1);
         }, 0.3);
@@ -110,14 +132,14 @@ cc.Class({
     //     }, 0.2);
     // },
 
-    doAction(INNode, INIsLast) {
+    doAction(INNode, INIndex) {
         let endPosY = 0;
-        if (INIsLast) {
+        if (INIndex === 0) {
             endPosY = cc.winSize.height / 2 - INNode.height / 2;
         } else {
             endPosY = cc.winSize.height / 2 + INNode.height;
         }
-        INNode.script.beginMove(endPosY);
+        INNode.script.beginMove(endPosY, INIndex);
     },
 
     changeNodeLevel(INNode, INTag, INIcon) {
@@ -144,10 +166,23 @@ cc.Class({
     },
 
     doCountDown() {
-        if(this._curIndex < this._allNodes.length) {
+        if(this._curIndex < this._allNodes.length ||
+            this._isShowWinLayer) {
             return;
         }
-
+        cc.systemEvent.emit("change_time_status", false);
+        this._isShowWinLayer = true;
         g_app.showWinLayer();
-    }
+    },
+
+    resetGame() {
+        for(let i = 0; i < this._allNodes.length; ++ i) {
+            this._allNodes[i].destroy();
+        }
+        this._allNodes = [];
+        this._curIndex = 0;
+        this._isShowWinLayer = false;
+
+        this.nodeTime.script.reset();
+    },
 });

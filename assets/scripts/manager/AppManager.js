@@ -9,6 +9,9 @@ import {BlocksData} from "BlocksData";
 export var AppManager = (function () {
     let instance;
 
+    let _winLayer;
+    let _loseLayer;
+
     var AppManager = function () {
         if (!instance) {
             instance = this;
@@ -101,9 +104,17 @@ export var AppManager = (function () {
      */
     AppManager.prototype.replaceToHallScene = function (INFlag) {
         g_app.getGameData().reset();
-        g_app.reset();
+        // g_app.reset();
         g_audio.stopAllEffects();
         g_audio.stopMusic();
+
+        g_resManager.requirePrefabFile("prefabs/hall/Hall", (INNode) => {
+            let sceneCanvas = cc.director.getScene().getChildByName("Canvas");
+            INNode.parent = sceneCanvas;
+            INNode.position = cc.v2(0, 0);
+            this._curSceneNode.destroy();
+            g_app.setCurSceneNode(INNode);
+        })
     };
 
     /**
@@ -128,10 +139,11 @@ export var AppManager = (function () {
     AppManager.prototype.showLoseLayer = function() {
         g_resManager.requirePrefabFile("prefabs/game/LayerLose", (INNode) => {
             let sceneCanvas = cc.director.getScene().getChildByName("Canvas");
-            INNode.parent = sceneCanvas;
-            INNode.position = cc.v2(0, cc.winSize.height);
+            this._loseLayer = INNode;
+            this._loseLayer.parent = sceneCanvas;
+            this._loseLayer.position = cc.v2(0, cc.winSize.height);
             let moveAction = cc.moveTo(1, cc.v2(0, 0));
-            INNode.runAction(moveAction);
+            this._loseLayer.runAction(moveAction);
         })
     };
 
@@ -143,6 +155,7 @@ export var AppManager = (function () {
     AppManager.prototype.showWinLayer = function() {
         g_resManager.requirePrefabFile("prefabs/game/LayerWin", (INNode) => {
             let sceneCanvas = cc.director.getScene().getChildByName("Canvas");
+            // this._winLayer = INNode;
             INNode.parent = sceneCanvas;
             INNode.position = cc.v2(0, cc.winSize.height);
             let moveAction = cc.moveTo(1, cc.v2(0, 0));

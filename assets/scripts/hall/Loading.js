@@ -26,6 +26,7 @@ cc.Class({
         g_resManager.requirePrefabFile("prefabs/hall/Hall", (INNode) => {
             INNode.parent = this.node.parent;
             INNode.position = cc.v2(0, 0);
+            g_app.setCurSceneNode(INNode);
             this.scheduleOnce(() => {
                 this.node.active = false;
             }, 1);

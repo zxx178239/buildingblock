@@ -35,6 +35,47 @@ export class BlocksData {
         return this._subIndex;
     }
 
+    /**
+     * @description: 设置及获取当前关卡的积木数
+     * @param : 
+     * @return : 
+     */
+    setCurLevelBlockNums(INNums) {
+        this._blockNums = INNums;
+    }
+
+    getCurLevelBlockNums() {
+        return this._blockNums;
+    }
+
+    /**
+     * @description: 获取真正的关卡值，如果不需要的话则直接显示subIndex + 1即可
+     * @param : 
+     * @return : 
+     */
+    getCombineIndex() {
+        let levelConfigs = g_cfgManager.getTbl("LevelConfigs");
+        let oldIndex = 0;
+        for(let i = 0; i < this._bigIndex; ++ i) {
+            oldIndex += levelConfigs[i]["level_tags"].length;
+        }
+
+        return oldIndex + this._subIndex + 1;
+    }
+
+    /**
+     * @description: 设置及获取花费的时间字符串
+     * @param : 
+     * @return : 
+     */
+    setCostTimeStr(INTimeStr) {
+        this._timeStr = INTimeStr;
+    }
+
+    getCostTimeStr() {
+        return this._timeStr;
+    }
+
     reset() {
 
     }
