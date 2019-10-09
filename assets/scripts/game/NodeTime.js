@@ -50,6 +50,7 @@ cc.Class({
     },
 
     reset() {
+        this._isBegin = false;
         this.node.getComponent(cc.Label).string = "0.00''";
     }
 });
