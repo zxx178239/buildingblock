@@ -163,6 +163,22 @@ export var AppManager = (function () {
         })
     };
 
+    /**
+     * @description: 显示暂停场景
+     * @param : 
+     * @return : 
+     */
+    AppManager.prototype.showPauseLayer = function() {
+        g_resManager.requirePrefabFile("prefabs/game/LayerPause", (INNode) => {
+            let sceneCanvas = cc.director.getScene().getChildByName("Canvas");
+            
+            INNode.parent = sceneCanvas;
+            INNode.position = cc.v2(0, 0);
+            // let moveAction = cc.moveTo(1, cc.v2(0, 0));
+            // INNode.runAction(moveAction);
+        })
+    };
+
     // /**
     //  * @description: 设置、更新及获取游戏进度
     //  * @param : 

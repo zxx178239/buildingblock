@@ -246,5 +246,15 @@ cc.Class({
      */
     isShowWin() {
         return this._labelCountDownValue === 0;
+    },
+
+    /**
+     * @description: 点击暂停按钮
+     * @param : 
+     * @return : 
+     */
+    onPressPause() {
+        cc.director.pause();
+        g_app.showPauseLayer();
     }
 });

@@ -1,3 +1,4 @@
+
 /*
  * @Author: xxZhang
  * @Date: 2019-10-08 19:38:04
@@ -27,6 +28,9 @@ cc.Class({
 
     },
 
+    onDestroy() {
+    },
+
     onTouchStart() {
         if(this._isStartMove || !this._isCanMove) {
             return;
@@ -51,13 +55,22 @@ cc.Class({
         }
         this.node.zIndex = 1;
         this._isCanMove = false;
-        this.node.getComponent(cc.RigidBody).awake = true;
+        this.changeCurStatus(true);
+    },
+
+    /**
+     * @description: 改变状态
+     * @param : 
+     * @return : 
+     */
+    changeCurStatus(INFlag) {
+        this.node.getComponent(cc.RigidBody).awake = INFlag;
         let physicsComponent = this.node.getComponent(cc.PhysicsBoxCollider) ||
                                 this.node.getComponent(cc.PhysicsCircleCollider) ||
                                 this.node.getComponent(cc.PhysicsPolygonCollider);
-        physicsComponent.enabled = true;
+        physicsComponent.enabled = INFlag;
 
-        cc.systemEvent.emit("change_time_status", true);
+        cc.systemEvent.emit("change_time_status", INFlag);
     },
 
     onTouchCancel() {
