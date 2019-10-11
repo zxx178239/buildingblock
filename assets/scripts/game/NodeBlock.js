@@ -92,6 +92,38 @@ cc.Class({
         }
     },
 
+    initUI(INTag, INBlockId) {
+        let blockInfo = g_cfgManager.getConfigRecord("BlockConfigs", INBlockId);
+        let ui = blockInfo["ui"];
+        let gravity = blockInfo["gravity_scale"];
+        let friction = blockInfo["friction"];
+        let restitution = blockInfo["restitution"];
+
+        let rigidBody = this.node.getComponent(cc.RigidBody);
+        rigidBody.gravityScale = gravity;
+
+        let physicsComponent = this.node.getComponent(cc.PhysicsBoxCollider) ||
+                                this.node.getComponent(cc.CircleCollider) ||
+                                this.node.getComponent(cc.PhysicsPolygonCollider);
+
+        physicsComponent.friction = friction;
+        physicsComponent.restitution = restitution;
+
+        g_resManager.replaceSprite(this.node, ui, () => {
+            switch (INTag) {
+                case 0:
+                    this.node.getComponent(cc.PhysicsBoxCollider).size = cc.size(this.node.width, this.node.height);
+                    break;
+                case 1:
+                    this.node.getComponent(cc.PhysicsCircleCollider).radius = this.node.width / 2;
+                    break;
+                default:
+                    break;
+            }
+        });
+        // physicsComponent.apply();
+    },
+
     beginMove(INEndPos, INIndex) {
         this._endPosY = INEndPos;
         this._isStartMove = true;

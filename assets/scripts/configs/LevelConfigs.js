@@ -12,17 +12,23 @@ export const LevelConfigs = {
                 "index": 0,
                 "tag": "ui/hall/hallscene_jm_Icon1",
                 "block_list": [
-                    {"prefab_tag": 0, "icon": "ui/blocks/wood_square_medium_v1"}, 
-                    {"prefab_tag": 0, "icon": "ui/blocks/wood_square_medium_v1"},
-                    {"prefab_tag": 0, "icon": "ui/blocks/wood_square_small_v1"},
-                    {"prefab_tag": 0, "icon": "ui/blocks/wood_square_small_v1"},
-                    {"prefab_tag": 0, "icon": "ui/blocks/wood_square_small_v1"}],
+                    {"prefab_tag": 0, "block_id": 1}, 
+                    {"prefab_tag": 0, "block_id": 1},
+                    {"prefab_tag": 0, "block_id": 0},
+                    {"prefab_tag": 0, "block_id": 0},
+                    {"prefab_tag": 0, "block_id": 0}],
                 "level_prefab": "prefabs/levels/LayerLevel0_0"
             },
             {
                 "index": 1,
                 "tag": "ui/hall/hallscene_jm_Icon1",
-                "block_list": []
+                "block_list": [
+                    {"prefab_tag": 0, "block_id": 0}, 
+                    {"prefab_tag": 0, "block_id": 0},
+                    {"prefab_tag": 0, "block_id": 0},
+                    {"prefab_tag": 0, "block_id": 1},
+                    {"prefab_tag": 0, "block_id": 2}],
+                "level_prefab": "prefabs/levels/LayerLevel0_1"
             },
             {
                 "index": 2,

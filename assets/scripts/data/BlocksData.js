@@ -64,6 +64,25 @@ export class BlocksData {
     }
 
     /**
+     * @description: 更新下一关的索引值
+     * @param : 
+     * @return : 
+     */
+    updateNextLevelIndex() {
+        let levelConfigs = g_cfgManager.getTbl("LevelConfigs");
+        let curLevelLength = levelConfigs[this._bigIndex]["level_tags"].length;
+
+        if(this._subIndex + 1 >= curLevelLength) {
+            this._bigIndex ++;
+            this._subIndex = 0;
+
+            this._bigIndex = (levelConfigs[this._bigIndex] ? this._bigIndex : 0);
+        }else {
+            this._subIndex ++;
+        }
+    }
+
+    /**
      * @description: 设置及获取花费的时间字符串
      * @param : 
      * @return : 

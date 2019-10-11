@@ -11,15 +11,15 @@ export const GameDefine = {
 
 // 配置表的tag到prefab的映射关系
 export const LevelTagToPrefab = {
-    0: "prefabs/game/NodeBlockRect",
-    1: "prefabs/game/NodeBlockCircle",
-    2: "prefabs/game/NodeBlockTriangle1",
-    3: "prefabs/game/NodeBlockTriangle2",
-    4: "prefabs/game/NodeBlockTriangle3",
-    5: "prefabs/game/NodeBlockTriangle4",
-    6: "prefabs/game/NodeBlockTriangle5",
-    7: "prefabs/game/NodeBlockTriangle6",
-    8: "prefabs/game/NodeBlockTriangle7",
-    9: "prefabs/game/NodeBlockTriangle8",
-    10: "prefabs/game/NodeBlockTriangle9",
+    0: "prefabs/blocks/NodeBlockRect",
+    1: "prefabs/blocks/NodeBlockCircle",
+    2: "prefabs/blocks/NodeBlockTriangle1",
+    3: "prefabs/blocks/NodeBlockTriangle2",
+    4: "prefabs/blocks/NodeBlockTriangle3",
+    5: "prefabs/blocks/NodeBlockTriangle4",
+    6: "prefabs/blocks/NodeBlockTriangle5",
+    7: "prefabs/blocks/NodeBlockTriangle6",
+    8: "prefabs/blocks/NodeBlockTriangle7",
+    9: "prefabs/blocks/NodeBlockTriangle8",
+    10: "prefabs/blocks/NodeBlockTriangle9",
 }

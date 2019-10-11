@@ -68,6 +68,8 @@ cc.Class({
      * @return : 
      */
     onPressNext() {
-
+        this.node.destroy();
+        g_app.getGameData().updateNextLevelIndex();
+        g_app.getCurSceneNode().script.nextGame();
     },
  });

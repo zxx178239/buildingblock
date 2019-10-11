@@ -5,12 +5,14 @@
  */
 
 import { LevelConfigs } from "LevelConfigs";
+import { BlockConfigs } from "BlockConfigs";
 
 export var ConfigManager = (function () {
     let instance;
     
     let CFG_TBLS = {
         "LevelConfigs" : LevelConfigs,
+        "BlockConfigs" : BlockConfigs
     };
 
     var ConfigManager = function () {

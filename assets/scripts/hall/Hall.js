@@ -25,6 +25,7 @@ cc.Class({
     start () {
         let levelConfigs = g_cfgManager.getTbl("LevelConfigs");
         this.initOnePage(levelConfigs, 0);
+        g_app.getGameData().setLevelBigIndex(0);
     },
 
     initOnePage(INAllDatas, INIndex) {
